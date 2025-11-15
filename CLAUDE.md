@@ -57,25 +57,40 @@ This app is **separate from the existing MG stack** (Medusa, ERPNext, Minio, Noc
 
 ## Color Season Analysis Logic
 
-The questionnaire maps user responses to one of four color seasons:
+The questionnaire uses a **12-season system** (not 4!) with rule-based algorithm defined in YAML files.
 
-### 1. Determine Undertone
-- **Warm:** Green veins, gold jewelry preference, golden/red hair, earth tones
-- **Cool:** Blue/purple veins, silver jewelry, ash blonde/black hair, blues/grays
-- **Neutral:** Blue-green veins, both metals work, mixed preferences
+### System Overview
+- **Rules defined in:** `rules/` directory (questionnaire.yaml, seasons.yaml, mapping-rules.yaml)
+- **Algorithm:** Signal accumulation → Characteristic determination → Season mapping
+- **Seasons:** 12 total (Bright/True/Light Spring, Light/True/Soft Summer, Soft/True/Dark Autumn, Dark/True/Bright Winter)
 
-### 2. Determine Contrast Level
-- **High:** Very fair + dark hair, or deep skin + very dark hair, wears black/white/bright colors
-- **Medium:** Most combinations, mix of bright and muted
-- **Low:** Fair + light hair, or medium skin + medium hair, prefers soft/muted colors
+### How It Works
 
-### 3. Season Mapping
-- **SPRING** (Warm + Bright): Coral, peach, bright yellow, turquoise, warm green
-- **SUMMER** (Cool + Soft): Soft pink, lavender, powder blue, mauve, cocoa
-- **AUTUMN** (Warm + Muted): Rust, olive, terracotta, burnt orange, deep teal
-- **WINTER** (Cool + Bright): True red, royal blue, emerald, pure white, black, magenta
+1. **Signal Accumulation**: Each questionnaire answer adds weighted signals
+   - Undertone signals: warm, cool, neutral
+   - Value signals: light, medium, deep
+   - Chroma signals: bright, muted, soft, rich
+   - Contrast signals: high, medium, low
 
-Each season provides core neutrals, accent colors, and colors to avoid.
+2. **Characteristic Determination**: Dominant signals determine characteristics
+   - Vein color has highest weight (4) for undertone
+   - Skin tone determines value
+   - Color preferences indicate chroma
+
+3. **Season Mapping**: Characteristics map to specific season
+   - Example: Warm + Light + Soft = Light Spring
+   - Example: Cool + Deep + Bright = Dark Winter
+
+4. **Confidence Score**: Algorithm calculates 0-100% confidence
+   - Boosts for aligned characteristics
+   - Penalties for conflicts
+   - Season-specific modifiers
+
+Each season includes:
+- Core neutrals (with hex codes)
+- Accent colors (with hex codes)
+- Colors to avoid
+- Characteristics (undertone, value, chroma)
 
 ## Product Recommendation System
 
@@ -89,12 +104,22 @@ Match user's determined season to compatible products from Medusa API.
 
 ## Development Phases
 
-1. **Phase 1:** Core questionnaire logic + PostgreSQL database from the start
-2. **Phase 2:** Email integration with Resend, HTML email templates
-3. **Phase 3:** Product recommendations from Medusa API
-4. **Phase 4:** VPS deployment with subdomain, Nginx, SSL, systemd
-5. **Phase 5:** Optional photo upload + AI analysis for refined recommendations
-6. **Phase 6:** Analytics (completion rate, email opens, click-throughs)
+1. **Phase 1:** ✅ COMPLETE - Core questionnaire logic + PostgreSQL database
+2. **Phase 2:** ✅ COMPLETE - Email integration with Resend, HTML email templates
+3. **Phase 3:** 🚧 NEXT - Product recommendations from Medusa API
+4. **Phase 4:** 📋 PLANNED - VPS deployment with subdomain, Nginx, SSL, PM2
+5. **Phase 5:** 📋 PLANNED - Optional photo upload + AI analysis for refined recommendations
+6. **Phase 6:** 📋 PLANNED - Analytics (completion rate, email opens, click-throughs)
+
+### Phase 1 & 2 Status (COMPLETE)
+- ✅ 12-season color analysis algorithm (YAML-based rules)
+- ✅ FastAPI backend with auto-reload
+- ✅ PostgreSQL database (Docker) with SQLAlchemy ORM
+- ✅ Beautiful questionnaire with MG design system
+- ✅ Email service integration (Resend)
+- ✅ HTML email template with color swatches
+- ✅ Local development environment fully working
+- ✅ Code on GitHub (clean history, no secrets)
 
 ## Environment Variables
 
@@ -153,30 +178,41 @@ DEBUG=false
 ```
 palette-ai/
 ├── app/
+│   ├── __init__.py
 │   ├── main.py                 # FastAPI entry point
 │   ├── models.py               # Database models (SQLAlchemy)
-│   ├── database.py             # Database connection
-│   ├── schemas.py              # Pydantic schemas
-│   ├── config.py               # Environment config
-│   ├── questionnaire.py        # Season determination logic
-│   ├── email_service.py        # Resend integration
-│   └── product_matcher.py      # Medusa API integration
+│   ├── database.py             # Database connection & session
+│   ├── schemas.py              # Pydantic request/response schemas
+│   ├── config.py               # Environment config (pydantic-settings)
+│   ├── questionnaire.py        # Season determination algorithm
+│   ├── email_service.py        # Resend email integration
+│   ├── rules_loader.py         # YAML rules loader
+│   └── product_matcher.py      # Medusa API integration (Phase 3)
+├── rules/
+│   ├── README.md               # Rules system documentation
+│   ├── questionnaire.yaml      # Questions with weighted signals
+│   ├── seasons.yaml            # 12 season definitions with hex codes
+│   ├── mapping-rules.yaml      # Signal → season decision tree
+│   └── system.md               # Philosophy and overview
 ├── static/
-│   ├── css/style.css
-│   ├── js/questionnaire.js
-│   └── images/color-swatches/
+│   ├── css/style.css           # MG design system
+│   └── js/questionnaire.js     # Form handling
 ├── templates/
-│   ├── questionnaire.html
-│   ├── thank-you.html
-│   └── photo-upload.html       # Phase 5
+│   ├── questionnaire.html      # Main questionnaire page
+│   └── thank-you.html          # Confirmation page
 ├── email_templates/
-│   ├── palette-result.html
-│   └── photo-result.html       # Phase 5
-├── requirements.txt
-├── .env                        # Local environment variables
+│   └── palette-result.html     # Email with color swatches
+├── docs/
+│   ├── local-development.md    # Dev setup guide
+│   ├── tech-plan.md            # Original planning doc
+│   └── customer-question-list.md
+├── requirements.txt            # Python dependencies
+├── .env                        # Local environment variables (gitignored)
 ├── .env.example                # Template for environment setup
+├── .gitignore
 ├── docker-compose.yml          # PostgreSQL for local dev
-└── ecosystem.config.js         # PM2 config for VPS deployment
+├── run.py                      # Development server script
+└── CLAUDE.md                   # This file
 ```
 
 ## Success Metrics

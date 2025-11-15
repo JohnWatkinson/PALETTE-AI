@@ -3,9 +3,11 @@
 ## Quick Overview
 A FastAPI-based color palette recommendation tool that:
 - Captures emails through interactive questionnaire
-- Determines user's color season (Spring/Summer/Autumn/Winter)
+- Determines user's color season using **12-season system** (not 4!)
 - Sends personalized palette recommendations via Resend
-- Recommends Maison Guida products from Medusa API
+- (Phase 3) Recommends Maison Guida products from Medusa API
+
+**Current Status:** Phase 1 & 2 Complete ✅
 
 ## Development Setup
 
@@ -17,33 +19,40 @@ A FastAPI-based color palette recommendation tool that:
 ### 1. Clone and Setup Virtual Environment
 ```bash
 cd /home/john/AI/PALETTE-AI
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+python3 -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### 2. Start Infrastructure (PostgreSQL)
+### 2. Configure Environment Variables
+```bash
+# Copy example and add your keys
+cp .env.example .env
+
+# Edit .env and add:
+# - RESEND_API_KEY (get from resend.com)
+# - MEDUSA_PUBLISHABLE_KEY (optional, for Phase 3)
+```
+
+### 3. Start Infrastructure (PostgreSQL)
 ```bash
 docker compose up -d  # Starts PostgreSQL on port 5433
 ```
 
-### 3. Initialize Database
-```bash
-# Run migrations (creates tables)
-python -m app.database init
-
-# Optional: Seed with test data
-python -m app.database seed
-```
-
 ### 4. Run Development Server
 ```bash
-# Start FastAPI with auto-reload
-uvicorn app.main:app --reload --port 8001
-
-# Or use the run script
+# Database tables are created automatically on startup!
 python run.py
+
+# Or directly with uvicorn:
+uvicorn app.main:app --reload --port 8001
 ```
+
+The app will:
+- ✅ Auto-create database tables on first run
+- ✅ Watch for code changes and reload
+- ✅ Be available at http://localhost:8001
 
 ## Key URLs
 
@@ -192,23 +201,30 @@ curl -X POST http://localhost:8001/api/test-email \
 
 ## Season Determination Algorithm
 
-The questionnaire analyzes:
+The questionnaire uses a **12-season system** with YAML-based rules:
 
-1. **Undertone Detection**
-   - Warm: Green veins + gold jewelry + warm hair
-   - Cool: Blue veins + silver jewelry + cool hair
-   - Neutral: Mixed signals
+### How It Works
 
-2. **Contrast Level**
-   - High: Fair skin + dark hair, or deep skin + very dark hair
-   - Low: Fair + light, or medium + medium
-   - Medium: Everything else
+1. **Signal Accumulation**: Each answer adds weighted signals
+   - Undertone: warm/cool/neutral (vein color has weight 4)
+   - Value: light/medium/deep (from skin tone)
+   - Chroma: bright/muted/soft/rich (from color preferences)
+   - Contrast: high/medium/low
 
-3. **Season Mapping**
-   - **Spring**: Warm + Bright
-   - **Summer**: Cool + Soft
-   - **Autumn**: Warm + Muted
-   - **Winter**: Cool + Bright
+2. **Characteristic Determination**: Finds dominant signals
+   - Warm undertone if warm signals >= 8
+   - Light value if light signals >= 6
+   - Bright chroma if bright signals >= 5
+
+3. **Season Mapping**: Maps to one of 12 seasons
+   - **Spring Family** (Warm): Bright Spring, True Spring, Light Spring
+   - **Summer Family** (Cool): Light Summer, True Summer, Soft Summer
+   - **Autumn Family** (Warm): Soft Autumn, True Autumn, Dark Autumn
+   - **Winter Family** (Cool): Dark Winter, True Winter, Bright Winter
+
+4. **Confidence Score**: 0-100% based on signal strength and modifiers
+
+See `rules/` directory for complete algorithm details.
 
 ## Common Tasks
 
@@ -338,5 +354,6 @@ See [vps-deployment.md](vps-deployment.md) for full deployment guide.
 
 ---
 
-**Status**: 🚧 In Development
-**Current Phase**: Phase 1 - Core Questionnaire & Database Setup
+**Status**: ✅ Phase 1 & 2 Complete
+**Current Phase**: Phase 3 - Product Recommendations (Next)
+**Last Updated**: November 15, 2025
