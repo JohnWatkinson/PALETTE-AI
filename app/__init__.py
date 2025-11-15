@@ -1,0 +1,1 @@
+# PALETTE-AI Application

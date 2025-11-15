@@ -1,0 +1,268 @@
+# Season Mapping Rules
+# Converts accumulated signals into a specific season
+
+# Signal Accumulation Process:
+# 1. Sum all signals from questionnaire responses
+# 2. Determine dominant undertone (warm/cool/neutral)
+# 3. Determine dominant value (light/medium/deep)
+# 4. Determine dominant chroma (bright/muted/soft)
+# 5. Map combination to specific season
+
+mapping_logic:
+  # Step 1: Undertone Determination
+  undertone_rules:
+    warm_threshold: 8 # If warm signals >= 8, undertone is warm
+    cool_threshold: 8 # If cool signals >= 8, undertone is cool
+    neutral_range: [5, 7] # If both in this range, neutral
+
+    # Edge case: If warm and cool are close, look at neutral signals
+    tie_breaker: "neutral_signals"
+
+  # Step 2: Value Determination
+  value_rules:
+    light_threshold: 6
+    deep_threshold: 6
+    medium_default: true # If neither light nor deep dominate
+
+  # Step 3: Chroma Determination
+  chroma_rules:
+    bright_threshold: 5
+    muted_threshold: 5
+    soft_threshold: 4
+
+    # Priority: bright > muted > soft
+    # Some seasons have overlapping chroma
+
+# Season Decision Tree
+# Based on the three primary characteristics
+
+season_mappings:
+  # ========== SPRING SEASONS (Warm-based) ==========
+
+  bright_spring:
+    conditions:
+      undertone: "warm"
+      chroma: "bright"
+      value: ["medium", "light"]
+    confidence_modifiers:
+      - if_avoids: ["black", "navy"]
+        boost: 0.1
+      - if_wears: ["bright_jewel_tones"]
+        boost: 0.15
+
+  true_spring:
+    conditions:
+      undertone: "warm"
+      chroma: ["clear", "moderate_bright"]
+      value: "medium"
+    confidence_modifiers:
+      - if_wears: ["earth_tones", "pastels"]
+        boost: 0.1
+
+  light_spring:
+    conditions:
+      undertone: "warm"
+      value: "light"
+      chroma: ["soft", "clear"]
+    confidence_modifiers:
+      - if_avoids: ["black", "dark_colors"]
+        boost: 0.15
+      - if_has: ["golden_blonde", "light_brown_hair"]
+        boost: 0.1
+
+  # ========== SUMMER SEASONS (Cool-based) ==========
+
+  light_summer:
+    conditions:
+      undertone: "cool"
+      value: "light"
+      chroma: ["soft", "muted"]
+    confidence_modifiers:
+      - if_wears: ["pastels"]
+        boost: 0.15
+      - if_avoids: ["bright_colors"]
+        boost: 0.1
+
+  true_summer:
+    conditions:
+      undertone: "cool"
+      value: "medium"
+      chroma: "muted"
+    confidence_modifiers:
+      - if_wears: ["muted_colors"]
+        boost: 0.15
+      - if_prefers: ["silver"]
+        boost: 0.05
+
+  soft_summer:
+    conditions:
+      undertone: ["cool", "neutral"]
+      chroma: "very_muted"
+      value: ["medium", "light"]
+    confidence_modifiers:
+      - if_avoids: ["bright_jewel_tones", "black"]
+        boost: 0.2
+      - if_wears: ["muted_colors"]
+        boost: 0.1
+
+  # ========== AUTUMN SEASONS (Warm-based) ==========
+
+  soft_autumn:
+    conditions:
+      undertone: ["warm", "neutral"]
+      chroma: "muted"
+      value: "medium"
+    confidence_modifiers:
+      - if_wears: ["earth_tones", "muted_colors"]
+        boost: 0.15
+      - if_avoids: ["bright_colors", "black"]
+        boost: 0.1
+
+  true_autumn:
+    conditions:
+      undertone: "warm"
+      chroma: "rich"
+      value: ["medium", "deep"]
+    confidence_modifiers:
+      - if_wears: ["earth_tones"]
+        boost: 0.2
+      - if_has: ["red_auburn_hair"]
+        boost: 0.15
+      - if_prefers: ["gold"]
+        boost: 0.1
+
+  dark_autumn:
+    conditions:
+      undertone: "warm"
+      value: "deep"
+      chroma: ["rich", "deep"]
+    confidence_modifiers:
+      - if_has: ["dark_brown_hair", "deep_skin"]
+        boost: 0.15
+      - if_wears: ["earth_tones", "deep_colors"]
+        boost: 0.1
+
+  # ========== WINTER SEASONS (Cool-based) ==========
+
+  dark_winter:
+    conditions:
+      undertone: "cool"
+      value: "deep"
+      chroma: "bright"
+    confidence_modifiers:
+      - if_has: ["black_hair", "very_deep_skin"]
+        boost: 0.2
+      - if_wears: ["black_navy_charcoal", "bright_jewel_tones"]
+        boost: 0.15
+
+  true_winter:
+    conditions:
+      undertone: "cool"
+      chroma: "bright"
+      value: ["medium", "deep"]
+    confidence_modifiers:
+      - if_wears: ["bright_jewel_tones", "black_navy_charcoal"]
+        boost: 0.15
+      - if_prefers: ["silver"]
+        boost: 0.05
+
+  bright_winter:
+    conditions:
+      undertone: "cool"
+      chroma: "very_bright"
+      value: "medium"
+    confidence_modifiers:
+      - if_wears: ["bright_jewel_tones"]
+        boost: 0.2
+      - if_avoids: ["muted_colors", "earth_tones"]
+        boost: 0.15
+
+# Edge Case Handling
+# When signals are ambiguous or tied
+
+edge_cases:
+  # Neutral undertone handling
+  neutral_undertone:
+    if_signals_equal:
+      warm: [6, 8]
+      cool: [6, 8]
+    then_consider:
+      - chroma_dominance
+      - value_dominance
+      - jewelry_preference
+    possible_seasons:
+      - "soft_summer" # Cool-neutral
+      - "soft_autumn" # Warm-neutral
+
+  # High contrast edge
+  very_high_contrast:
+    conditions:
+      contrast_signals: ">= 6"
+      value_difference: "light_skin + dark_hair OR deep_skin + light_hair"
+    likely_seasons:
+      - "dark_winter"
+      - "dark_autumn"
+      - "bright_winter"
+      - "bright_spring"
+
+  # Low contrast edge
+  very_low_contrast:
+    conditions:
+      contrast_signals: "<= 2"
+      value: ["light", "medium"]
+    likely_seasons:
+      - "light_summer"
+      - "light_spring"
+      - "soft_summer"
+      - "soft_autumn"
+
+# Confidence Scoring
+# Each season gets a confidence score 0-100%
+
+confidence_calculation:
+  base_score: 60 # Starting confidence
+
+  modifiers:
+    # Strong matches
+    perfect_undertone_match: +15
+    perfect_value_match: +10
+    perfect_chroma_match: +10
+
+    # Weak matches
+    undertone_close: +5
+    value_close: +5
+    chroma_close: +5
+
+    # Conflicts
+    undertone_conflict: -20
+    value_conflict: -10
+
+  # Multiple season matches
+  if_tied:
+    method: "rank_by_confidence"
+    show_top: 2
+    suggest: "Consider both, or upload photo for refinement"
+
+# AI Enhancement Points
+# Where to inject AI for personalization
+
+ai_enhancement:
+  use_cases:
+    - step: "explanation_generation"
+      prompt: "Explain why user is [season] based on their [undertone], [value], [chroma]"
+      tone: "friendly, personal, not technical"
+
+    - step: "edge_case_resolution"
+      when: "confidence < 70% OR multiple seasons tied"
+      prompt: "Analyze signals and provide nuanced recommendation"
+
+    - step: "color_story"
+      prompt: "Create a short narrative about the user's season connecting to nature/personality"
+      max_words: 100
+
+    - step: "outfit_suggestions"
+      prompt: "Given season [X] and MG collection, suggest 3 specific pieces with styling tips"
+
+  # Keep it minimal - AI adds flavor, not logic
+  ai_percentage: "10-20% of response"
+  critical_path: "Rules-based algorithm does the heavy lifting"

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Analysis - Maison Guida</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Palette Analysis</h1>
+
+        <div class="intro">
+            <p>Discover your personal color season and receive a curated palette</p>
+            <p>tailored to your unique coloring.</p>
+        </div>
+
+        <form id="questionnaire-form">
+            <!-- Email -->
+            <div class="question">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <h2>Your Coloring</h2>
+
+            <!-- Q1: Hair Color -->
+            <div class="question">
+                <label for="hair_color">Natural Hair Color</label>
+                <select id="hair_color" name="hair_color" required>
+                    <option value="">Select...</option>
+                    <option value="black">Black</option>
+                    <option value="dark_brown">Dark Brown</option>
+                    <option value="light_brown">Light Brown</option>
+                    <option value="golden_blonde">Blonde (Golden/Warm)</option>
+                    <option value="ash_blonde">Blonde (Ash/Cool)</option>
+                    <option value="red_auburn">Red/Auburn</option>
+                    <option value="gray_white">Gray/White</option>
+                </select>
+            </div>
+
+            <!-- Q2: Skin Tone -->
+            <div class="question">
+                <label for="skin_tone">Skin Tone</label>
+                <select id="skin_tone" name="skin_tone" required>
+                    <option value="">Select...</option>
+                    <option value="very_fair">Very Fair (burns easily, rarely tans)</option>
+                    <option value="fair">Fair (burns sometimes, tans gradually)</option>
+                    <option value="light_medium">Light-Medium (tans easily, rarely burns)</option>
+                    <option value="medium_olive">Medium/Olive</option>
+                    <option value="tan_caramel">Tan/Caramel</option>
+                    <option value="deep_rich">Deep/Rich Brown</option>
+                    <option value="very_deep">Very Deep/Dark Brown</option>
+                </select>
+            </div>
+
+            <!-- Q3: Eye Color -->
+            <div class="question">
+                <label for="eye_color">Eye Color</label>
+                <select id="eye_color" name="eye_color" required>
+                    <option value="">Select...</option>
+                    <option value="light_blue">Light Blue</option>
+                    <option value="blue_gray">Blue-Gray/Steel Blue</option>
+                    <option value="green">Green</option>
+                    <option value="hazel">Hazel (Green-Brown)</option>
+                    <option value="light_brown">Light Brown/Amber</option>
+                    <option value="dark_brown">Dark Brown</option>
+                    <option value="black">Black</option>
+                </select>
+            </div>
+
+            <!-- Q4: Vein Color (MOST IMPORTANT) -->
+            <div class="question">
+                <label for="vein_color">Vein Color (Look at your wrist in natural light)</label>
+                <select id="vein_color" name="vein_color" required>
+                    <option value="">Select...</option>
+                    <option value="blue_purple">Blue/Purple</option>
+                    <option value="green">Green</option>
+                    <option value="blue_green_mix">Blue-Green Mix</option>
+                    <option value="cant_tell">Can't Tell</option>
+                </select>
+            </div>
+
+            <!-- Q5: Jewelry Preference -->
+            <div class="question">
+                <label for="jewelry_preference">Which Metals Look Best on You?</label>
+                <select id="jewelry_preference" name="jewelry_preference" required>
+                    <option value="">Select...</option>
+                    <option value="silver">Silver</option>
+                    <option value="gold">Gold</option>
+                    <option value="both">Both Look Good</option>
+                    <option value="not_sure">Not Sure</option>
+                </select>
+            </div>
+
+            <h2>Your Style</h2>
+
+            <!-- Q6: Colors You Wear -->
+            <div class="question">
+                <label>Which Colors Do You Wear Most Often? (Select all that apply)</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="wear_black" name="colors_worn" value="black_navy_charcoal">
+                        <label for="wear_black">Black, Navy, Charcoal</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="wear_brown" name="colors_worn" value="brown_beige_camel">
+                        <label for="wear_brown">Brown, Beige, Camel</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="wear_white" name="colors_worn" value="white_cream_ivory">
+                        <label for="wear_white">White, Cream, Ivory</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="wear_bright" name="colors_worn" value="bright_jewel_tones">
+                        <label for="wear_bright">Bright Colors (Red, Royal Blue, Emerald)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="wear_muted" name="colors_worn" value="muted_colors">
+                        <label for="wear_muted">Muted Colors (Dusty Rose, Sage, Burgundy)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="wear_pastels" name="colors_worn" value="pastels">
+                        <label for="wear_pastels">Pastels (Baby Blue, Soft Pink, Lavender)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="wear_earth" name="colors_worn" value="earth_tones">
+                        <label for="wear_earth">Earth Tones (Rust, Olive, Terracotta)</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q7: Colors You Avoid -->
+            <div class="question">
+                <label>Which Colors Do You Avoid? (Select all that apply)</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="avoid_black" name="colors_avoided" value="black_navy_charcoal">
+                        <label for="avoid_black">Black, Navy, Charcoal</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="avoid_brown" name="colors_avoided" value="brown_beige_camel">
+                        <label for="avoid_brown">Brown, Beige, Camel</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="avoid_white" name="colors_avoided" value="white_cream_ivory">
+                        <label for="avoid_white">White, Cream, Ivory</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="avoid_bright" name="colors_avoided" value="bright_jewel_tones">
+                        <label for="avoid_bright">Bright Colors</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="avoid_muted" name="colors_avoided" value="muted_colors">
+                        <label for="avoid_muted">Muted Colors</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="avoid_pastels" name="colors_avoided" value="pastels">
+                        <label for="avoid_pastels">Pastels</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="avoid_earth" name="colors_avoided" value="earth_tones">
+                        <label for="avoid_earth">Earth Tones</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q8: Feedback -->
+            <div class="question">
+                <label for="color_feedback">When You Wear Certain Colors, People Say You Look:</label>
+                <select id="color_feedback" name="color_feedback" required>
+                    <option value="">Select...</option>
+                    <option value="vibrant_glowing">Vibrant and Glowing</option>
+                    <option value="washed_out">Washed Out or Tired</option>
+                    <option value="depends">It Depends on the Color</option>
+                    <option value="no_comments">No One Comments</option>
+                </select>
+            </div>
+
+            <!-- Newsletter Consent -->
+            <div class="consent">
+                <label>
+                    <input type="checkbox" id="newsletter_consent" name="newsletter_consent">
+                    <span>I would like to receive styling tips and updates from Maison Guida.</span>
+                </label>
+            </div>
+
+            <button type="submit">Discover My Palette</button>
+        </form>
+
+        <div class="footer">
+            <p>Maison Guida - Personal Color Analysis</p>
+        </div>
+    </div>
+
+    <script src="/static/js/questionnaire.js"></script>
+</body>
+</html>

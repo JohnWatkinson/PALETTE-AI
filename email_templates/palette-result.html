@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Color Palette - Maison Guida</title>
+    <style>
+        /* Email-safe inline CSS */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            color: #000000;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 48px 24px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #D3D0C9;
+        }
+        .logo {
+            font-size: 20px;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #000000;
+            margin-bottom: 12px;
+        }
+        .subtitle {
+            font-size: 13px;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            color: #4A4A4A;
+        }
+        .season-title {
+            font-size: 32px;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-align: center;
+            margin: 48px 0 12px;
+            color: #000000;
+        }
+        .confidence {
+            text-align: center;
+            font-size: 14px;
+            color: #4A4A4A;
+            margin-bottom: 48px;
+        }
+        .characteristics {
+            text-align: center;
+            margin-bottom: 48px;
+            padding: 24px;
+            background-color: #F5F5F0;
+        }
+        .char-item {
+            display: inline-block;
+            margin: 0 16px;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+        .char-label {
+            color: #4A4A4A;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+        .char-value {
+            color: #000000;
+            font-weight: 400;
+            margin-top: 4px;
+        }
+        .section-title {
+            font-size: 16px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 48px 0 24px;
+            color: #000000;
+        }
+        .color-grid {
+            display: table;
+            width: 100%;
+            margin-bottom: 36px;
+        }
+        .color-row {
+            display: table-row;
+        }
+        .color-cell {
+            display: table-cell;
+            padding: 8px;
+            vertical-align: top;
+            width: 25%;
+        }
+        .color-swatch {
+            width: 100%;
+            height: 80px;
+            border: 1px solid #D3D0C9;
+            margin-bottom: 8px;
+        }
+        .color-name {
+            font-size: 12px;
+            text-align: center;
+            color: #4A4A4A;
+            letter-spacing: 0.3px;
+        }
+        .color-hex {
+            font-size: 10px;
+            text-align: center;
+            color: #999999;
+            font-family: monospace;
+        }
+        .avoid-list {
+            text-align: center;
+            font-size: 13px;
+            color: #4A4A4A;
+            line-height: 1.8;
+        }
+        .cta {
+            text-align: center;
+            margin: 60px 0;
+        }
+        .button {
+            display: inline-block;
+            padding: 16px 48px;
+            background-color: #000000;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 36px;
+            border-top: 1px solid #D3D0C9;
+            color: #999999;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            line-height: 1.8;
+        }
+        @media only screen and (max-width: 600px) {
+            .color-cell {
+                display: block;
+                width: 100%;
+                padding: 8px 0;
+            }
+            .char-item {
+                display: block;
+                margin: 12px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">Maison Guida</div>
+            <div class="subtitle">Personal Color Analysis</div>
+        </div>
+
+        <!-- Season Title -->
+        <div class="season-title">{{ season_name }}</div>
+        <div class="confidence">{{ confidence }}% Confidence</div>
+
+        <!-- Characteristics -->
+        <div class="characteristics">
+            <div class="char-item">
+                <div class="char-label">Undertone</div>
+                <div class="char-value">{{ undertone|capitalize }}</div>
+            </div>
+            <div class="char-item">
+                <div class="char-label">Value</div>
+                <div class="char-value">{{ value|capitalize }}</div>
+            </div>
+            <div class="char-item">
+                <div class="char-label">Chroma</div>
+                <div class="char-value">{{ chroma|capitalize }}</div>
+            </div>
+        </div>
+
+        <!-- Core Neutrals -->
+        <div class="section-title">Core Neutrals</div>
+        <div class="color-grid">
+            {% for color in core_neutrals %}
+                {% if loop.index0 % 4 == 0 %}<div class="color-row">{% endif %}
+                <div class="color-cell">
+                    <div class="color-swatch" style="background-color: {{ color.hex }};"></div>
+                    <div class="color-name">{{ color.name }}</div>
+                    <div class="color-hex">{{ color.hex }}</div>
+                </div>
+                {% if loop.index0 % 4 == 3 or loop.last %}</div>{% endif %}
+            {% endfor %}
+        </div>
+
+        <!-- Accent Colors -->
+        <div class="section-title">Accent Colors</div>
+        <div class="color-grid">
+            {% for color in accent_colors %}
+                {% if loop.index0 % 4 == 0 %}<div class="color-row">{% endif %}
+                <div class="color-cell">
+                    <div class="color-swatch" style="background-color: {{ color.hex }};"></div>
+                    <div class="color-name">{{ color.name }}</div>
+                    <div class="color-hex">{{ color.hex }}</div>
+                </div>
+                {% if loop.index0 % 4 == 3 or loop.last %}</div>{% endif %}
+            {% endfor %}
+        </div>
+
+        <!-- Colors to Avoid -->
+        {% if avoid_colors %}
+        <div class="section-title">Colors to Avoid</div>
+        <div class="avoid-list">
+            {{ avoid_colors|join(', ') }}
+        </div>
+        {% endif %}
+
+        <!-- CTA -->
+        <div class="cta">
+            <a href="https://maisonguida.com" class="button">Shop Your Colors</a>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Maison Guida</p>
+            <p>Personal Color Analysis</p>
+            <p style="margin-top: 12px; font-size: 10px;">
+                This email was sent because you completed our color analysis questionnaire.<br>
+                Visit us at <a href="https://maisonguida.com" style="color: #000;">maisonguida.com</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

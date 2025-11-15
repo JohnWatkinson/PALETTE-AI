@@ -1,0 +1,316 @@
+# Color Analysis Questionnaire
+# Maps user responses to color season signals
+
+questions:
+  q1_hair_color:
+    id: "q1"
+    question: "What is your natural hair color?"
+    type: "single_choice"
+    options:
+      - id: "black"
+        label: "Black"
+        signals:
+          undertone: { cool: 3 }
+          value: { deep: 3 }
+
+      - id: "dark_brown"
+        label: "Dark brown"
+        signals:
+          value: { deep: 2 }
+
+      - id: "light_brown"
+        label: "Light brown"
+        signals:
+          value: { medium: 2 }
+
+      - id: "golden_blonde"
+        label: "Blonde (golden/warm)"
+        signals:
+          undertone: { warm: 3 }
+          value: { light: 2 }
+
+      - id: "ash_blonde"
+        label: "Blonde (ash/cool)"
+        signals:
+          undertone: { cool: 3 }
+          value: { light: 2 }
+
+      - id: "red_auburn"
+        label: "Red/Auburn"
+        signals:
+          undertone: { warm: 4 }
+          chroma: { rich: 2 }
+
+      - id: "gray_white"
+        label: "Gray/White"
+        signals:
+          value: { light: 2 }
+          contrast: { varies: 1 }
+
+  q2_skin_tone:
+    id: "q2"
+    question: "How would you describe your skin tone?"
+    type: "single_choice"
+    options:
+      - id: "very_fair"
+        label: "Very fair (burns easily, rarely tans)"
+        signals:
+          value: { light: 3 }
+          contrast: { depends_on_hair: 1 }
+
+      - id: "fair"
+        label: "Fair (burns sometimes, tans gradually)"
+        signals:
+          value: { light: 2 }
+
+      - id: "light_medium"
+        label: "Light-medium (tans easily, rarely burns)"
+        signals:
+          value: { medium: 2 }
+
+      - id: "medium_olive"
+        label: "Medium/Olive"
+        signals:
+          value: { medium: 2 }
+          undertone: { warm: 1 }
+
+      - id: "tan_caramel"
+        label: "Tan/Caramel"
+        signals:
+          value: { medium: 2 }
+          undertone: { warm: 1 }
+
+      - id: "deep_rich"
+        label: "Deep/Rich brown"
+        signals:
+          value: { deep: 3 }
+
+      - id: "very_deep"
+        label: "Very deep/Dark brown"
+        signals:
+          value: { deep: 4 }
+
+  q3_eye_color:
+    id: "q3"
+    question: "What is your eye color?"
+    type: "single_choice"
+    options:
+      - id: "light_blue"
+        label: "Light blue"
+        signals:
+          undertone: { cool: 2 }
+          chroma: { soft: 1 }
+
+      - id: "blue_gray"
+        label: "Blue-gray/Steel blue"
+        signals:
+          undertone: { cool: 2 }
+          chroma: { muted: 1 }
+
+      - id: "green"
+        label: "Green"
+        signals:
+          chroma: { bright: 1 }
+
+      - id: "hazel"
+        label: "Hazel (green-brown)"
+        signals:
+          undertone: { warm: 1 }
+          chroma: { muted: 1 }
+
+      - id: "light_brown"
+        label: "Light brown/Amber"
+        signals:
+          undertone: { warm: 2 }
+
+      - id: "dark_brown"
+        label: "Dark brown"
+        signals:
+          value: { deep: 1 }
+
+      - id: "black"
+        label: "Black"
+        signals:
+          value: { deep: 2 }
+          contrast: { high: 1 }
+
+  q4_vein_color:
+    id: "q4"
+    question: "Look at the veins on your wrist in natural light - what color are they?"
+    type: "single_choice"
+    help_text: "This is the most reliable undertone indicator"
+    options:
+      - id: "blue_purple"
+        label: "Blue/Purple"
+        signals:
+          undertone: { cool: 4 } # Strongest signal
+
+      - id: "green"
+        label: "Green"
+        signals:
+          undertone: { warm: 4 } # Strongest signal
+
+      - id: "blue_green_mix"
+        label: "Blue-green mix"
+        signals:
+          undertone: { neutral: 3 }
+
+      - id: "cant_tell"
+        label: "Can't tell"
+        signals:
+          undertone: { neutral: 1 }
+
+  q5_jewelry:
+    id: "q5"
+    question: "Which metals look best on you?"
+    type: "single_choice"
+    options:
+      - id: "silver"
+        label: "Silver jewelry"
+        signals:
+          undertone: { cool: 3 }
+
+      - id: "gold"
+        label: "Gold jewelry"
+        signals:
+          undertone: { warm: 3 }
+
+      - id: "both"
+        label: "Both look good"
+        signals:
+          undertone: { neutral: 2 }
+          chroma: { bright: 1 } # Often bright seasons can wear both
+
+      - id: "not_sure"
+        label: "Not sure"
+        signals:
+          undertone: { neutral: 1 }
+
+  q6_colors_wear:
+    id: "q6"
+    question: "Which colors do you wear most often?"
+    type: "multi_choice"
+    max_selections: 5
+    options:
+      - id: "black_navy_charcoal"
+        label: "Black, Navy, Charcoal"
+        signals:
+          undertone: { cool: 1 }
+          contrast: { high: 2 }
+
+      - id: "brown_beige_camel"
+        label: "Brown, Beige, Camel"
+        signals:
+          undertone: { warm: 2 }
+
+      - id: "white_cream_ivory"
+        label: "White, Cream, Ivory"
+        signals:
+          value: { light: 1 }
+
+      - id: "bright_jewel_tones"
+        label: "Bright colors (red, royal blue, emerald)"
+        signals:
+          chroma: { bright: 3 }
+          contrast: { high: 1 }
+
+      - id: "muted_colors"
+        label: "Muted colors (dusty rose, sage, burgundy)"
+        signals:
+          chroma: { muted: 3 }
+
+      - id: "pastels"
+        label: "Pastels (baby blue, soft pink, lavender)"
+        signals:
+          value: { light: 2 }
+          chroma: { soft: 2 }
+
+      - id: "earth_tones"
+        label: "Earth tones (rust, olive, terracotta)"
+        signals:
+          undertone: { warm: 2 }
+          chroma: { muted: 1 }
+
+  q7_colors_avoid:
+    id: "q7"
+    question: "Which colors do you avoid or feel don't suit you?"
+    type: "multi_choice"
+    max_selections: 5
+    note: "Avoiding colors gives inverse signals"
+    options:
+      - id: "black_navy_charcoal"
+        label: "Black, Navy, Charcoal"
+        signals:
+          undertone: { warm: 1 } # Cool colors wash them out
+          contrast: { low: 1 }
+
+      - id: "brown_beige_camel"
+        label: "Brown, Beige, Camel"
+        signals:
+          undertone: { cool: 1 }
+
+      - id: "white_cream_ivory"
+        label: "White, Cream, Ivory"
+        signals:
+          value: { deep: 1 }
+
+      - id: "bright_jewel_tones"
+        label: "Bright colors (red, royal blue, emerald)"
+        signals:
+          chroma: { muted: 2 }
+
+      - id: "muted_colors"
+        label: "Muted colors (dusty rose, sage, burgundy)"
+        signals:
+          chroma: { bright: 2 }
+
+      - id: "pastels"
+        label: "Pastels (baby blue, soft pink, lavender)"
+        signals:
+          value: { deep: 1 }
+          chroma: { bright: 1 }
+
+      - id: "earth_tones"
+        label: "Earth tones (rust, olive, terracotta)"
+        signals:
+          undertone: { cool: 2 }
+
+  q8_feedback:
+    id: "q8"
+    question: "When you wear certain colors, people say you look:"
+    type: "single_choice"
+    options:
+      - id: "vibrant_glowing"
+        label: "Vibrant and glowing"
+        signals:
+          chroma: { bright: 2 }
+          # Good color match
+
+      - id: "washed_out"
+        label: "Washed out or tired"
+        signals:
+          # Using wrong colors - doesn't give direct signals
+          needs_analysis: true
+
+      - id: "depends"
+        label: "It depends on the color"
+        signals:
+          # Normal response
+          neutral: 1
+
+      - id: "no_comments"
+        label: "No one comments"
+        signals:
+          # Neutral
+          neutral: 1
+# Signal Processing Notes:
+#
+# Each answer provides weighted signals toward:
+# - undertone: warm, cool, neutral
+# - value: light, medium, deep
+# - chroma: bright, muted, soft, rich
+# - contrast: high, medium, low
+#
+# The algorithm sums signals across all questions
+# to determine the dominant characteristics,
+# then maps to the appropriate season.

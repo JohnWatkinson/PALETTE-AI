@@ -1,0 +1,249 @@
+/* PALETTE-AI - Maison Guida Design System */
+
+:root {
+  --black: #000000;
+  --white: #FFFFFF;
+  --warm-gray: #F5F5F0;
+  --medium-gray: #D3D0C9;
+  --dark-gray: #4A4A4A;
+  --font-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-primary);
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--black);
+  background: var(--white);
+  letter-spacing: 0.3px;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 60px 24px;
+}
+
+h1 {
+  font-size: 28px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 48px;
+  text-align: center;
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: 300;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  margin-top: 48px;
+}
+
+.intro {
+  text-align: center;
+  margin-bottom: 48px;
+  color: var(--dark-gray);
+  font-size: 14px;
+}
+
+.question {
+  margin-bottom: 36px;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+  color: var(--dark-gray);
+}
+
+select, input[type="email"] {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--medium-gray);
+  background: var(--white);
+  font-family: var(--font-primary);
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: 0.3px;
+  transition: border-color 0.2s;
+}
+
+select:focus, input[type="email"]:focus {
+  outline: none;
+  border-color: var(--black);
+}
+
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkbox-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--medium-gray);
+}
+
+.checkbox-item label {
+  margin: 0;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.consent {
+  margin-top: 36px;
+  padding: 24px;
+  background: var(--warm-gray);
+  border: 1px solid var(--medium-gray);
+}
+
+.consent label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  margin: 0;
+}
+
+.consent input[type="checkbox"] {
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 16px 32px;
+  margin-top: 48px;
+  background: var(--black);
+  color: var(--white);
+  border: none;
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button[type="submit"]:hover {
+  background: var(--dark-gray);
+}
+
+button[type="submit"]:disabled {
+  background: var(--medium-gray);
+  cursor: not-allowed;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 60px;
+  padding-top: 36px;
+  border-top: 1px solid var(--medium-gray);
+  color: var(--dark-gray);
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+/* Loading state */
+.loading {
+  text-align: center;
+  padding: 48px;
+}
+
+.loading-spinner {
+  border: 2px solid var(--medium-gray);
+  border-top: 2px solid var(--black);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 24px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Result page */
+.result {
+  text-align: center;
+}
+
+.season-title {
+  font-size: 32px;
+  font-weight: 300;
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+}
+
+.confidence {
+  color: var(--dark-gray);
+  font-size: 14px;
+  margin-bottom: 48px;
+}
+
+.palette-section {
+  margin-top: 48px;
+  text-align: left;
+}
+
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.color-swatch {
+  text-align: center;
+}
+
+.color-box {
+  width: 100%;
+  aspect-ratio: 1;
+  border: 1px solid var(--medium-gray);
+  margin-bottom: 8px;
+}
+
+.color-name {
+  font-size: 11px;
+  color: var(--dark-gray);
+  letter-spacing: 0.3px;
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 36px 20px;
+  }
+
+  h1 {
+    font-size: 24px;
+    margin-bottom: 36px;
+  }
+
+  .color-grid {
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  }
+}

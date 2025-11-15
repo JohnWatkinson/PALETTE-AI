@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: palette-postgres
+    environment:
+      POSTGRES_USER: palette
+      POSTGRES_PASSWORD: palette
+      POSTGRES_DB: palette
+    ports:
+      - "5433:5432"  # Use 5433 to avoid conflicts with other local postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
