@@ -46,6 +46,13 @@ Build a color palette recommendation tool for Maison Guida that captures emails,
 - [x] Implement season determination algorithm
 - [x] Generate color palette based on season (with hex codes)
 - [x] Store email + responses in database
+- [ ] **TODO:** Add first name & last name fields to questionnaire
+- [ ] **TODO:** Add language selector dropdown (Italian/English)
+- [ ] **TODO:** Add privacy policy consent checkbox - MANDATORY (GDPR requirement: "I have read and agree to the Privacy Policy")
+- [ ] **TODO:** Keep existing newsletter checkbox - OPTIONAL (already exists: "I would like to receive styling tips and updates from Maison Guida")
+- [ ] **TODO:** Create privacy policy page explaining data collection and user rights
+- [ ] **TODO:** Support Italian language in questionnaire and email templates
+- [ ] **TODO:** Implement email uniqueness check and submission counter (prevent duplicate entries)
 
 ### Deliverable
 ✅ Working questionnaire that determines user's season (12 seasons) and stores data
@@ -154,9 +161,15 @@ color-app/
 
 ### users table
 - id (primary key)
-- email (unique)
+- first_name
+- last_name
+- email (unique, indexed)
+- language (en/it)
+- newsletter_consent (boolean, explicit opt-in)
+- privacy_consent (boolean, GDPR requirement)
+- submission_count (track repeat submissions)
 - created_at
-- newsletter_consent
+- last_submission_at
 
 ### responses table
 - id (primary key)
@@ -233,8 +246,9 @@ DATABASE_URL=sqlite:///./database.db
 
 ### Business Risks
 - **Low engagement:** A/B test questionnaire length, email design
-- **Privacy concerns:** Clear privacy policy, GDPR compliance for EU users
+- **Privacy concerns:** Clear privacy policy, GDPR compliance for EU users (explicit consent checkboxes, right to deletion, data retention policy)
 - **Product mismatch:** Regularly review and refine season → product mapping
+- **Language barriers:** Provide Italian translations for Italian market (questionnaire + emails)
 
 ## Next Steps
 
@@ -248,9 +262,11 @@ DATABASE_URL=sqlite:///./database.db
 ## Future Enhancements (Post-Launch)
 
 - Social sharing of color palettes
-- Seasonal wardrobe guides
+- **Premium tier: Seasonal styling guides** (e.g., "Your True Summer colors for AW25" - personalized seasonal lookbooks combining their color season with current fashion season)
+- **Premium tier: Personal stylist consultation** (video call + personalized recommendations)
 - Virtual try-on with MG products
 - Integration with MG physical shop (QR code in store)
 - Referral system (share with friends)
-- Premium tier with personal stylist consultation
+- AI-powered outfit builder (mix your colors with MG products)
+- Seasonal wardrobe capsule recommendations
 ```
