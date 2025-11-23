@@ -2,6 +2,7 @@ import resend
 from typing import Dict, List
 from pathlib import Path
 from jinja2 import Template
+from premailer import transform
 from .config import settings
 from .schemas import PaletteResult
 
@@ -34,8 +35,9 @@ class EmailService:
             return False
 
         try:
-            # Load and render email template
+            # Load and render email templates
             html_content = self._render_template(palette)
+            text_content = self._generate_text_version(palette)
 
             # Send email via Resend
             params = {
@@ -43,6 +45,7 @@ class EmailService:
                 "to": [to_email],
                 "subject": f"Your Color Season: {palette.season_display_name}",
                 "html": html_content,
+                "text": text_content,
             }
 
             response = resend.Emails.send(params)
@@ -55,14 +58,14 @@ class EmailService:
             return False
 
     def _render_template(self, palette: PaletteResult) -> str:
-        """Render HTML email template with palette data"""
+        """Render HTML email template with palette data and inline CSS"""
 
         template_path = self.template_dir / "palette-result.html"
 
         with open(template_path, "r") as f:
             template = Template(f.read())
 
-        return template.render(
+        html_content = template.render(
             season=palette.season,
             season_name=palette.season_display_name,
             confidence=palette.confidence,
@@ -74,6 +77,54 @@ class EmailService:
             avoid_colors=palette.avoid_colors,
             explanation=palette.explanation
         )
+
+        # Inline CSS for email client compatibility (Gmail, Outlook, etc.)
+        inlined_html = transform(html_content)
+
+        return inlined_html
+
+    def _generate_text_version(self, palette: PaletteResult) -> str:
+        """Generate plain text version of the email for accessibility"""
+
+        text_parts = [
+            "MAISON GUIDA",
+            "Personal Color Analysis",
+            "",
+            f"YOUR COLOR SEASON: {palette.season_display_name.upper()}",
+            f"Confidence: {palette.confidence}%",
+            "",
+            "YOUR CHARACTERISTICS",
+            f"Undertone: {palette.undertone.capitalize()}",
+            f"Value: {palette.value.capitalize()}",
+            f"Chroma: {palette.chroma.capitalize()}",
+            "",
+            "CORE NEUTRALS",
+        ]
+
+        # Add core neutrals
+        for color in palette.core_neutrals:
+            text_parts.append(f"• {color.name} ({color.hex})")
+
+        text_parts.extend(["", "ACCENT COLORS"])
+
+        # Add accent colors
+        for color in palette.accent_colors:
+            text_parts.append(f"• {color.name} ({color.hex})")
+
+        # Add colors to avoid
+        if palette.avoid_colors:
+            text_parts.extend(["", "COLORS TO AVOID", ", ".join(palette.avoid_colors)])
+
+        text_parts.extend([
+            "",
+            "Shop your colors at https://maisonguida.com",
+            "",
+            "---",
+            "This email was sent because you completed our color analysis questionnaire.",
+            "Visit us at https://maisonguida.com"
+        ])
+
+        return "\n".join(text_parts)
 
 
 # Global instance

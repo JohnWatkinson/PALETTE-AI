@@ -15,7 +15,17 @@ document.getElementById('questionnaire-form').addEventListener('submit', async (
 
     // Build submission object
     const submission = {
+        // Personal information (GDPR)
+        first_name: formData.get('first_name'),
+        last_name: formData.get('last_name'),
         email: formData.get('email'),
+        language: formData.get('language'),
+
+        // Consent (GDPR)
+        privacy_consent: formData.get('privacy_consent') === 'on',
+        newsletter_consent: formData.get('newsletter_consent') === 'on',
+
+        // Questionnaire responses
         hair_color: formData.get('hair_color'),
         skin_tone: formData.get('skin_tone'),
         eye_color: formData.get('eye_color'),
@@ -23,8 +33,7 @@ document.getElementById('questionnaire-form').addEventListener('submit', async (
         jewelry_preference: formData.get('jewelry_preference'),
         colors_worn: formData.getAll('colors_worn'),
         colors_avoided: formData.getAll('colors_avoided'),
-        color_feedback: formData.get('color_feedback'),
-        newsletter_consent: formData.get('newsletter_consent') === 'on'
+        color_feedback: formData.get('color_feedback')
     };
 
     try {

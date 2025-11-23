@@ -70,12 +70,25 @@ async def submit_questionnaire(
         # Create or get user
         user = db.query(User).filter(User.email == submission.email).first()
         if not user:
+            # New user - create with GDPR fields
             user = User(
+                first_name=submission.first_name,
+                last_name=submission.last_name,
                 email=submission.email,
-                newsletter_consent=submission.newsletter_consent
+                language=submission.language,
+                privacy_consent=submission.privacy_consent,
+                newsletter_consent=submission.newsletter_consent,
+                submission_count=1,
+                last_submission_at=func.now()
             )
             db.add(user)
             db.flush()  # Get user ID
+        else:
+            # Existing user - update consent and submission tracking
+            user.privacy_consent = submission.privacy_consent
+            user.newsletter_consent = submission.newsletter_consent
+            user.submission_count += 1
+            user.last_submission_at = func.now()
 
         # Save questionnaire response
         response = Response(

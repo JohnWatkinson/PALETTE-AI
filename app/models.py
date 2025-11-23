@@ -9,8 +9,22 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
+
+    # Personal information
+    first_name = Column(String(100), nullable=False)
+    last_name = Column(String(100), nullable=False)
     email = Column(String(255), unique=True, nullable=False, index=True)
-    newsletter_consent = Column(Boolean, default=False)
+    language = Column(String(2), default='en')  # 'en' or 'it'
+
+    # GDPR Consent tracking
+    privacy_consent = Column(Boolean, nullable=False)  # GDPR requirement - must accept privacy policy
+    newsletter_consent = Column(Boolean, default=False)  # Optional - marketing emails via Omnisend
+
+    # Submission tracking
+    submission_count = Column(Integer, default=1)
+    last_submission_at = Column(DateTime(timezone=True))
+
+    # Metadata
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     # Relationships

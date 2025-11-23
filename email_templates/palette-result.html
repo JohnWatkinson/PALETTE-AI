@@ -85,15 +85,11 @@
             color: #000000;
         }
         .color-grid {
-            display: table;
             width: 100%;
             margin-bottom: 36px;
-        }
-        .color-row {
-            display: table-row;
+            border-collapse: collapse;
         }
         .color-cell {
-            display: table-cell;
             padding: 8px;
             vertical-align: top;
             width: 25%;
@@ -164,7 +160,7 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <img src="https://palette.maisonguida.com/static/images/site-logo.png" alt="Maison Guida" style="max-width: 200px; height: auto; margin-bottom: 12px;">
+            <div class="logo">Maison Guida</div>
             <div class="subtitle">Personal Color Analysis</div>
         </div>
 
@@ -190,31 +186,31 @@
 
         <!-- Core Neutrals -->
         <div class="section-title">Core Neutrals</div>
-        <div class="color-grid">
+        <table role="presentation" class="color-grid" cellspacing="0" cellpadding="0">
             {% for color in core_neutrals %}
-                {% if loop.index0 % 4 == 0 %}<div class="color-row">{% endif %}
-                <div class="color-cell">
+                {% if loop.index0 % 4 == 0 %}<tr>{% endif %}
+                <td class="color-cell">
                     <div class="color-swatch" style="background-color: {{ color.hex }};"></div>
                     <div class="color-name">{{ color.name }}</div>
                     <div class="color-hex">{{ color.hex }}</div>
-                </div>
-                {% if loop.index0 % 4 == 3 or loop.last %}</div>{% endif %}
+                </td>
+                {% if loop.index0 % 4 == 3 or loop.last %}</tr>{% endif %}
             {% endfor %}
-        </div>
+        </table>
 
         <!-- Accent Colors -->
         <div class="section-title">Accent Colors</div>
-        <div class="color-grid">
+        <table role="presentation" class="color-grid" cellspacing="0" cellpadding="0">
             {% for color in accent_colors %}
-                {% if loop.index0 % 4 == 0 %}<div class="color-row">{% endif %}
-                <div class="color-cell">
+                {% if loop.index0 % 4 == 0 %}<tr>{% endif %}
+                <td class="color-cell">
                     <div class="color-swatch" style="background-color: {{ color.hex }};"></div>
                     <div class="color-name">{{ color.name }}</div>
                     <div class="color-hex">{{ color.hex }}</div>
-                </div>
-                {% if loop.index0 % 4 == 3 or loop.last %}</div>{% endif %}
+                </td>
+                {% if loop.index0 % 4 == 3 or loop.last %}</tr>{% endif %}
             {% endfor %}
-        </div>
+        </table>
 
         <!-- Colors to Avoid -->
         {% if avoid_colors %}

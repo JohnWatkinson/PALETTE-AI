@@ -5,8 +5,15 @@ from datetime import datetime
 
 class QuestionnaireSubmission(BaseModel):
     """Schema for questionnaire submission"""
+    # Personal information (GDPR required)
+    first_name: str
+    last_name: str
     email: EmailStr
-    newsletter_consent: bool = False
+    language: str = 'en'  # 'en' or 'it'
+
+    # GDPR Consent
+    privacy_consent: bool  # MANDATORY - must accept privacy policy
+    newsletter_consent: bool = False  # OPTIONAL - Maison Guida marketing via Omnisend
 
     # Q1: Hair color
     hair_color: str
