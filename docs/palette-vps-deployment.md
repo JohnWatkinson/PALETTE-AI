@@ -36,9 +36,10 @@ pm2 logs palette-ai --lines 50
 
 **Important Notes:**
 - No rebuild needed (FastAPI auto-reloads Python files in production)
-- If requirements.txt changed, run: `pip install -r requirements.txt`
+- If requirements.txt changed, run: `source .venv/bin/activate && pip install -r requirements.txt`
 - If environment variables changed, restart is required
-- Database migrations: `cd ~/PALETTE-AI && python -c "from app.database import init_db; init_db()"`
+- If YAML rules changed (rules/*.yaml), restart is required (loaded on startup)
+- Database migrations: `source .venv/bin/activate && alembic upgrade head`
 
 ---
 
@@ -78,10 +79,10 @@ cd PALETTE-AI
 
 ```bash
 # Create virtual environment
-python3 -m venv venv
+python3 -m venv .venv
 
 # Activate it
-source venv/bin/activate
+source .venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
@@ -101,8 +102,8 @@ docker-compose up -d
 # Verify container is running
 docker ps | grep palette
 
-# Create tables (run migrations)
-python -c "from app.database import init_db; init_db()"
+# Run database migrations
+alembic upgrade head
 ```
 
 **Database runs on port 5433** (different from Medusa's 5432)
@@ -134,6 +135,7 @@ ANTHROPIC_API_KEY=YOUR_CLAUDE_API_KEY
 # App Settings
 APP_PORT=8001
 DEBUG=false
+TESTING_MODE=false  # Must be false in production to send real emails
 ```
 
 **Security Notes:**
@@ -155,7 +157,7 @@ module.exports = {
   apps: [
     {
       name: 'palette-ai',
-      script: 'venv/bin/python',
+      script: '.venv/bin/python',
       args: '-m uvicorn app.main:app --host 0.0.0.0 --port 8001',
       cwd: '/home/john/PALETTE-AI',
       instances: 1,
@@ -306,12 +308,14 @@ curl http://localhost:8001/static/images/site-logo.svg
 ## File Locations on VPS
 
 - **Repo:** `~/PALETTE-AI/`
-- **Virtual Environment:** `~/PALETTE-AI/venv/`
+- **Virtual Environment:** `~/PALETTE-AI/.venv/`
 - **Database:** Docker container `palette-postgres` (port 5433)
 - **PM2 Config:** `~/PALETTE-AI/ecosystem.config.js`
 - **Nginx Config:** `/etc/nginx/sites-available/palette_maisonguida_com`
 - **Static Files:** `~/PALETTE-AI/static/`
 - **Email Templates:** `~/PALETTE-AI/email_templates/`
+- **YAML Rules:** `~/PALETTE-AI/rules/` (questionnaire, seasons, mapping)
+- **Migrations:** `~/PALETTE-AI/migrations/versions/`
 - **Logs:** `~/.pm2/logs/palette-ai-*.log`
 
 ---
@@ -399,8 +403,8 @@ docker exec -i palette-postgres psql -U palette palette < ~/backups/palette-2025
 ### Run Migrations (if schema changes)
 ```bash
 cd ~/PALETTE-AI
-source venv/bin/activate
-python -c "from app.database import init_db; init_db()"
+source .venv/bin/activate
+alembic upgrade head
 ```
 
 ---
@@ -409,7 +413,10 @@ python -c "from app.database import init_db; init_db()"
 
 ### Check Questionnaire Submissions
 ```bash
-# Total submissions
+# Total users
+docker exec -it palette-postgres psql -U palette -d palette -c "SELECT COUNT(*) as total_users FROM users;"
+
+# Total submissions (can be > users if people resubmit)
 docker exec -it palette-postgres psql -U palette -d palette -c "SELECT COUNT(*) as total_submissions FROM responses;"
 
 # Submissions by date
@@ -420,6 +427,9 @@ docker exec -it palette-postgres psql -U palette -d palette -c "SELECT season, C
 
 # Newsletter signups
 docker exec -it palette-postgres psql -U palette -d palette -c "SELECT COUNT(*) as newsletter_signups FROM users WHERE newsletter_consent = true;"
+
+# Privacy consent acceptance rate
+docker exec -it palette-postgres psql -U palette -d palette -c "SELECT COUNT(*) FILTER (WHERE privacy_consent = true) * 100.0 / COUNT(*) as privacy_acceptance_rate FROM users;"
 ```
 
 ### Application Logs
@@ -533,8 +543,11 @@ git stash  # Save any VPS-only changes (.env)
 git pull origin master
 
 # Reinstall dependencies
-source venv/bin/activate
+source .venv/bin/activate
 pip install -r requirements.txt
+
+# Run any new migrations
+alembic upgrade head
 
 # Restart app
 pm2 restart palette-ai
@@ -547,6 +560,8 @@ pm2 save
 
 - [ ] `.env` file has strong database password
 - [ ] `.env` is in `.gitignore` (never committed)
+- [ ] `TESTING_MODE=false` in production (must send real emails)
+- [ ] `DEBUG=false` in production
 - [ ] SSL certificate is active (HTTPS)
 - [ ] Nginx configured to redirect HTTP → HTTPS
 - [ ] Database only accessible from localhost (not exposed to internet)
@@ -556,6 +571,7 @@ pm2 save
 - [ ] Rate limiting configured in FastAPI (prevent spam)
 - [ ] CORS properly configured
 - [ ] Server firewall configured (UFW)
+- [ ] Plausible analytics domain added (palette.maisonguida.com)
 
 ---
 
@@ -668,6 +684,7 @@ docker exec palette-postgres pg_dump -U palette palette > ~/palette-backup-$(dat
 ### App Settings
 - `APP_PORT` - Port to run on (default: 8001)
 - `DEBUG` - Debug mode (false in production)
+- `TESTING_MODE` - Disable email sending for tests (false in production)
 
 ---
 
@@ -683,9 +700,9 @@ docker exec palette-postgres pg_dump -U palette palette > ~/palette-backup-$(dat
 
 ---
 
-**Last Updated:** January 16, 2025
-**Status:** 🚧 Ready for deployment
-**Current Phase:** Phase 2 complete (questionnaire + email)
+**Last Updated:** November 23, 2025
+**Status:** ✅ Ready for deployment
+**Current Phase:** Phase 1 & 2 complete (questionnaire + email + GDPR + testing)
 **Next Phase:** Phase 3 (product recommendations from Medusa API)
 
 ---
