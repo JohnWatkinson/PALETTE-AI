@@ -121,12 +121,23 @@ class SeasonAnalyzer:
         deep = signals.get("value_deep", 0)
 
         mapping = self.rules.mapping_rules.get("mapping_logic", {}).get("value_rules", {})
-        light_threshold = mapping.get("light_threshold", 6)
-        deep_threshold = mapping.get("deep_threshold", 6)
+        # Lower thresholds after normalization fix
+        light_threshold = mapping.get("light_threshold", 3)  # Was 6
+        deep_threshold = mapping.get("deep_threshold", 3)   # Was 6
 
-        if light >= light_threshold and light > deep:
+        # Check which signals hit their thresholds
+        light_strong = light >= light_threshold
+        deep_strong = deep >= deep_threshold
+
+        # High contrast case: both light and deep are strong (e.g., black hair + fair skin)
+        # This indicates contrast rather than a single value - choose the stronger one
+        if light_strong and deep_strong:
+            return "deep" if deep >= light else "light"
+
+        # Normal cases: clear winner
+        if light_strong and light > deep:
             return "light"
-        if deep >= deep_threshold and deep > light:
+        if deep_strong and deep > light:
             return "deep"
 
         return "medium"
@@ -139,17 +150,18 @@ class SeasonAnalyzer:
         rich = signals.get("chroma_rich", 0)
 
         mapping = self.rules.mapping_rules.get("mapping_logic", {}).get("chroma_rules", {})
-        bright_threshold = mapping.get("bright_threshold", 5)
-        muted_threshold = mapping.get("muted_threshold", 5)
+        # Lower thresholds after normalization fix
+        bright_threshold = mapping.get("bright_threshold", 2.5)  # Was 5
+        muted_threshold = mapping.get("muted_threshold", 2.5)   # Was 5
 
         # Priority: bright > rich > muted > soft
         if bright >= bright_threshold:
             return "bright"
-        if rich >= 4:
+        if rich >= 1.0:  # Lowered for normalization
             return "rich"
         if muted >= muted_threshold:
             return "muted"
-        if soft >= 4:
+        if soft >= 1.0:  # Lowered for normalization
             return "soft"
 
         # Default: clear (moderate brightness)

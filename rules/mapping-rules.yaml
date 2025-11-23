@@ -20,15 +20,15 @@ mapping_logic:
 
   # Step 2: Value Determination
   value_rules:
-    light_threshold: 6
-    deep_threshold: 6
+    light_threshold: 3  # Lowered from 6 after normalization fix
+    deep_threshold: 3   # Lowered from 6 after normalization fix
     medium_default: true # If neither light nor deep dominate
 
   # Step 3: Chroma Determination
   chroma_rules:
-    bright_threshold: 5
-    muted_threshold: 5
-    soft_threshold: 4
+    bright_threshold: 2.5  # Lowered from 5 after normalization fix
+    muted_threshold: 2.5   # Lowered from 5 after normalization fix
+    soft_threshold: 2      # Lowered from 4 after normalization fix
 
     # Priority: bright > muted > soft
     # Some seasons have overlapping chroma

@@ -32,9 +32,12 @@ This app is **separate from the existing MG stack** (Medusa, ERPNext, Minio, Noc
 
 ### `users` table
 - `id` (primary key)
+- `first_name`, `last_name`
 - `email` (unique)
+- `language` (en/it)
+- `privacy_consent`, `newsletter_consent`
+- `submission_count`, `last_submission_at`
 - `created_at`
-- `newsletter_consent`
 
 ### `responses` table
 - `id`, `user_id` (foreign key)
@@ -113,11 +116,16 @@ Match user's determined season to compatible products from Medusa API.
 
 ### Phase 1 & 2 Status (COMPLETE)
 - ✅ 12-season color analysis algorithm (YAML-based rules)
+- ✅ Signal normalization for multi-select questions
+- ✅ Black box testing with 5 diverse personas (100% passing)
 - ✅ FastAPI backend with auto-reload
-- ✅ PostgreSQL database (Docker) with SQLAlchemy ORM
+- ✅ PostgreSQL database (Docker) with SQLAlchemy ORM + Alembic migrations
 - ✅ Beautiful questionnaire with MG design system
-- ✅ Email service integration (Resend)
-- ✅ HTML email template with color swatches
+- ✅ GDPR compliance (personal data fields, privacy consent)
+- ✅ Email service integration (Resend) with HTML + plain text templates
+- ✅ HTML email template with color swatches (inline CSS for Gmail/Outlook)
+- ✅ Plausible Analytics integration
+- ✅ Testing mode to prevent email spam during development
 - ✅ Local development environment fully working
 - ✅ Code on GitHub (clean history, no secrets)
 
@@ -142,6 +150,7 @@ ANTHROPIC_API_KEY=your_claude_api_key
 # App Settings
 APP_PORT=8001
 DEBUG=true
+TESTING_MODE=true  # Disable emails during testing
 ```
 
 ### Production VPS (.env)
@@ -163,6 +172,7 @@ ANTHROPIC_API_KEY=your_claude_api_key
 # App Settings
 APP_PORT=8001
 DEBUG=false
+TESTING_MODE=false  # Production should send real emails
 ```
 
 ## Key Design Decisions
@@ -202,6 +212,11 @@ palette-ai/
 │   └── thank-you.html          # Confirmation page
 ├── email_templates/
 │   └── palette-result.html     # Email with color swatches
+├── testing/
+│   ├── test_personas.py        # Black box testing with 5 personas
+│   └── test_results.json       # Test output (gitignored)
+├── migrations/
+│   └── versions/               # Alembic database migrations
 ├── docs/
 │   ├── local-development.md    # Dev setup guide
 │   ├── tech-plan.md            # Original planning doc

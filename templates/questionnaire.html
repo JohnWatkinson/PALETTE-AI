@@ -41,13 +41,8 @@
                 <input type="email" id="email" name="email" required>
             </div>
 
-            <div class="question">
-                <label for="language">Language / Lingua</label>
-                <select id="language" name="language" required>
-                    <option value="en">🇬🇧 English</option>
-                    <option value="it">🇮🇹 Italiano</option>
-                </select>
-            </div>
+            <!-- Language selector hidden until Italian translations are implemented -->
+            <input type="hidden" id="language" name="language" value="en">
 
             <h2>Your Coloring</h2>
 
@@ -204,26 +199,19 @@
                 </select>
             </div>
 
-            <!-- GDPR Consents -->
-            <h2>Privacy & Consent</h2>
-
-            <!-- MANDATORY: Privacy Policy -->
-            <div class="consent">
-                <label>
-                    <input type="checkbox" id="privacy_consent" name="privacy_consent" required>
-                    <span>I have read and agree to the <a href="https://www.maisonguida.com/en-it/privacy-policy" target="_blank">Privacy Policy</a> *</span>
-                </label>
-            </div>
-
-            <!-- OPTIONAL: Newsletter -->
+            <!-- Newsletter Opt-in (Optional) -->
             <div class="consent">
                 <label>
                     <input type="checkbox" id="newsletter_consent" name="newsletter_consent">
-                    <span>I would like to receive styling tips and updates from Maison Guida (optional)</span>
+                    <span>I would like to receive styling tips and updates from Maison Guida</span>
                 </label>
             </div>
 
             <button type="submit">Discover My Palette</button>
+
+            <p style="text-align: center; font-size: 12px; color: #999; margin-top: 16px;">
+                By clicking "Discover My Palette", you agree to our <a href="https://www.maisonguida.com/en-it/privacy-policy" target="_blank" style="color: #000; text-decoration: underline;">Privacy Policy</a>
+            </p>
         </form>
 
         <div class="footer">

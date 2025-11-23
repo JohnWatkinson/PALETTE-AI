@@ -30,6 +30,10 @@ class EmailService:
             True if sent successfully, False otherwise
         """
 
+        if settings.TESTING_MODE:
+            print(f"🧪 TESTING_MODE: Would send email to {to_email} ({palette.season_display_name})")
+            return True
+
         if not settings.RESEND_API_KEY:
             print("⚠️  No RESEND_API_KEY configured - skipping email")
             return False

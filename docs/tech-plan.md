@@ -43,37 +43,47 @@ Build a color palette recommendation tool for Maison Guida that captures emails,
 - [x] Set up FastAPI project structure
 - [x] Create PostgreSQL database schema (users, responses, palettes)
 - [x] Build questionnaire logic (12-season system with YAML rules)
+- [x] Implement signal normalization for multi-select questions
 - [x] Create simple HTML questionnaire form (MG design system)
 - [x] Implement season determination algorithm
 - [x] Generate color palette based on season (with hex codes)
 - [x] Store email + responses in database
-- [ ] **TODO:** Add first name & last name fields to questionnaire
-- [ ] **TODO:** Add language selector dropdown (Italian/English)
-- [ ] **TODO:** Add privacy policy consent checkbox - MANDATORY (GDPR requirement: "I have read and agree to the Privacy Policy")
-- [ ] **TODO:** Keep existing newsletter checkbox - OPTIONAL (already exists: "I would like to receive styling tips and updates from Maison Guida")
-- [ ] **TODO:** Create privacy policy page explaining data collection and user rights
+- [x] Add first name & last name fields to questionnaire
+- [x] Add language selector dropdown (Italian/English - hidden for now)
+- [x] Add privacy policy consent (implicit via submit button)
+- [x] Keep existing newsletter checkbox - OPTIONAL
+- [x] Implement email uniqueness check and submission counter
+- [x] Alembic migrations for database schema changes
+- [x] Black box testing with 5 diverse personas (100% passing)
+- [x] Fixed color theory bug: earth_tones now give "rich" signals
+- [x] Added TESTING_MODE to prevent email spam during development
 - [ ] **TODO:** Support Italian language in questionnaire and email templates
-- [ ] **TODO:** Implement email uniqueness check and submission counter (prevent duplicate entries)
+- [ ] **TODO:** Create privacy policy page explaining data collection and user rights
 
 ### Deliverable
 ✅ Working questionnaire that determines user's season (12 seasons) and stores data
 
-**Completed:** November 15, 2025
+**Completed:** November 23, 2025
 
 ## Phase 2: Email Integration ✅ COMPLETE
 
 ### Tasks
-- [x] Set up Resend account
+- [x] Set up Resend account (via ciao@maisonguida.com)
 - [x] Design HTML email template for palette results
-- [x] Create color palette visual with hex swatches (inline CSS for email compatibility)
+- [x] Create color palette visual with hex swatches
+- [x] Implement CSS inlining with premailer for Gmail/Outlook compatibility
+- [x] Add plain text email version
+- [x] Convert CSS tables to HTML tables for email clients
+- [x] Fix logo rendering (text-based instead of broken image)
 - [x] Implement email sending after questionnaire completion
 - [x] Test email delivery (Resend working)
 - [x] Add confirmation page after submission
+- [x] Plausible Analytics integration (palette.maisonguida.com)
 
 ### Deliverable
 ✅ Users receive personalized color palette via email after completing questionnaire
 
-**Completed:** November 15, 2025
+**Completed:** November 23, 2025
 
 ## Phase 3: Site Structure & Navigation
 

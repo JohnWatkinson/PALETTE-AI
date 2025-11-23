@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     # App Settings
     APP_PORT: int = 8001
     DEBUG: bool = True
+    TESTING_MODE: bool = False  # Disable emails during testing
 
     # Optional: AI for photo analysis
     ANTHROPIC_API_KEY: Optional[str] = None

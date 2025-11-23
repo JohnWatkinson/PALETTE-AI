@@ -1,0 +1,76 @@
+[
+  {
+    "persona": "Sofia - Classic Cool Summer",
+    "status": "\u2705 PASS",
+    "expected_undertone": "cool",
+    "actual_undertone": "cool",
+    "expected_seasons": [
+      "light_summer",
+      "true_summer",
+      "soft_summer"
+    ],
+    "actual_season": "light_summer",
+    "confidence": 69,
+    "undertone_match": true,
+    "season_match": true
+  },
+  {
+    "persona": "Marco - Deep Warm Autumn",
+    "status": "\u2705 PASS",
+    "expected_undertone": "warm",
+    "actual_undertone": "warm",
+    "expected_seasons": [
+      "true_autumn",
+      "dark_autumn",
+      "soft_autumn"
+    ],
+    "actual_season": "true_autumn",
+    "confidence": 78,
+    "undertone_match": true,
+    "season_match": true
+  },
+  {
+    "persona": "Elena - Bright Cool Winter",
+    "status": "\u2705 PASS",
+    "expected_undertone": "cool",
+    "actual_undertone": "cool",
+    "expected_seasons": [
+      "bright_winter",
+      "true_winter",
+      "dark_winter"
+    ],
+    "actual_season": "dark_winter",
+    "confidence": 69,
+    "undertone_match": true,
+    "season_match": true
+  },
+  {
+    "persona": "Giulia - Warm Spring",
+    "status": "\u2705 PASS",
+    "expected_undertone": "warm",
+    "actual_undertone": "warm",
+    "expected_seasons": [
+      "bright_spring",
+      "light_spring",
+      "true_spring"
+    ],
+    "actual_season": "bright_spring",
+    "confidence": 60,
+    "undertone_match": true,
+    "season_match": true
+  },
+  {
+    "persona": "Luca - Neutral (Edge Case)",
+    "status": "\u2705 PASS",
+    "expected_undertone": "neutral",
+    "actual_undertone": "neutral",
+    "expected_seasons": [
+      "soft_summer",
+      "soft_autumn"
+    ],
+    "actual_season": "soft_summer",
+    "confidence": 78,
+    "undertone_match": true,
+    "season_match": true
+  }
+]

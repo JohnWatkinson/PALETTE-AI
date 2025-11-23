@@ -229,7 +229,7 @@ questions:
         label: "Earth tones (rust, olive, terracotta)"
         signals:
           undertone: { warm: 2 }
-          chroma: { muted: 1 }
+          chroma: { rich: 2 }
 
   q7_colors_avoid:
     id: "q7"

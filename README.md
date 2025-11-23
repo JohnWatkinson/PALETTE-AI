@@ -11,19 +11,24 @@ PALETTE-AI helps users discover their personal color season through an interacti
 ### Features
 
 - ✅ **12-Season Color Analysis** - Advanced algorithm using warm/cool undertones, value depth, and chroma intensity
-- ✅ **Smart Questionnaire** - 8 questions with weighted signal system for accurate season determination
-- ✅ **Email Delivery** - Beautiful HTML emails with color swatches and hex codes
+- ✅ **Smart Questionnaire** - 8 questions with weighted signal system (normalized for multi-select)
+- ✅ **Email Delivery** - Beautiful HTML emails with color swatches and hex codes (Gmail/Outlook compatible)
+- ✅ **GDPR Compliant** - Personal data collection with privacy consent
+- ✅ **Black Box Testing** - 5 diverse test personas with 100% accuracy
 - ✅ **Maison Guida Design** - Clean, minimalist UI matching the brand aesthetic
+- ✅ **Analytics** - Plausible integration for cookieless tracking
 - 🚧 **Product Recommendations** - Coming in Phase 3
 - 📋 **Photo Analysis** - Planned for Phase 5
 
 ## Technology
 
-- **Backend:** FastAPI (Python 3.11+)
+- **Backend:** FastAPI (Python 3.11+), SQLAlchemy ORM, Alembic migrations
 - **Database:** PostgreSQL (Docker)
-- **Email:** Resend API
+- **Email:** Resend API with premailer for CSS inlining
+- **Analytics:** Plausible (self-hosted, cookieless)
 - **Frontend:** Vanilla HTML/CSS/JS (no framework)
-- **Deployment:** PM2 + Nginx on VPS
+- **Testing:** Black box testing with persona-based validation
+- **Deployment:** PM2 + Nginx on VPS (planned)
 
 ## Quick Start
 
@@ -50,15 +55,28 @@ pip install -r requirements.txt
 # 4. Configure environment
 cp .env.example .env
 # Edit .env and add your RESEND_API_KEY
+# Set TESTING_MODE=true to disable emails during development
 
 # 5. Start PostgreSQL
 docker compose up -d
 
-# 6. Run the app
+# 6. Run database migrations
+alembic upgrade head
+
+# 7. Run the app
 python run.py
 ```
 
 Visit **http://localhost:8001** to see the questionnaire!
+
+### Running Tests
+
+```bash
+# Run black box tests with test personas
+# Make sure server is running first!
+source .venv/bin/activate
+python testing/test_personas.py
+```
 
 ## Project Structure
 
@@ -68,11 +86,15 @@ palette-ai/
 │   ├── main.py            # App entry point
 │   ├── questionnaire.py   # Season determination algorithm
 │   ├── email_service.py   # Resend integration
-│   └── models.py          # Database models
+│   ├── models.py          # Database models
+│   └── config.py          # Environment settings
 ├── rules/                 # YAML-based color analysis rules
 │   ├── questionnaire.yaml # Questions with signal weights
 │   ├── seasons.yaml       # 12 season definitions
 │   └── mapping-rules.yaml # Decision tree logic
+├── testing/               # Black box tests
+│   └── test_personas.py   # 5 test personas
+├── migrations/            # Alembic database migrations
 ├── templates/             # HTML pages
 ├── email_templates/       # Email templates
 └── static/               # CSS & JavaScript
@@ -126,8 +148,11 @@ See [docs/local-development.md](docs/local-development.md) for detailed developm
 # Start development server (auto-reload enabled)
 python run.py
 
-# Run database migrations (auto-runs on startup)
-# Tables are created automatically!
+# Run database migrations
+alembic upgrade head
+
+# Run tests (server must be running)
+python testing/test_personas.py
 
 # View API documentation
 # Visit http://localhost:8001/docs
