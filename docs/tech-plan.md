@@ -4,6 +4,7 @@
 ## Project Overview
 Build a color palette recommendation tool for Maison Guida that captures emails, provides personalized color analysis via questionnaire, and recommends products from MG catalog.
 
+
 ## Goals
 1. Capture emails for newsletter
 2. Provide valuable color analysis to users
@@ -15,7 +16,7 @@ Build a color palette recommendation tool for Maison Guida that captures emails,
 
 ### Backend
 - **FastAPI** (Python web framework)
-- **SQLite** (database for emails, responses, palettes) - use postgres (medusa and everything else does)
+- **Postgres** (database for emails, responses, palettes) - use postgres (medusa and everything else does)
 - **Uvicorn** (ASGI server)
 - **Pillow** (future: photo analysis)
 - **Resend** (email delivery)
@@ -74,7 +75,35 @@ Build a color palette recommendation tool for Maison Guida that captures emails,
 
 **Completed:** November 15, 2025
 
-## Phase 3: Product Recommendations (Week 2)
+## Phase 3: Site Structure & Navigation
+
+### Tasks
+- [ ] Add header navigation to PALETTE-AI (Home | About | FAQ | Contact)
+- [ ] Create "About Color Analysis" page explaining the 12-season system
+- [ ] Create FAQ page answering common questions
+- [ ] Add footer with links back to main Maison Guida site
+- [ ] Add "Shop Maison Guida →" CTA button
+- [ ] Create contact page (or link to main site contact)
+- [ ] Add social media links in footer
+
+### Deliverable
+PALETTE-AI feels like a complete website, not just a landing page
+
+## Phase 4: Main Site Integration
+
+### Tasks
+- [ ] Add "Color Analysis" to main site navigation menu
+- [ ] Create homepage banner/CTA promoting PALETTE-AI
+- [ ] Add "Find Your Colors" link to product pages
+- [ ] Add footer link to palette.maisonguida.com
+- [ ] Create blog post announcing the color analysis tool
+- [ ] Send email newsletter to existing subscribers
+- [ ] Add color quiz CTA near product color selectors
+
+### Deliverable
+Main Maison Guida site drives traffic to PALETTE-AI
+
+## Phase 5: Product Recommendations
 
 ### Tasks
 - [ ] Tag MG products with color attributes (warm/cool, season compatibility)
@@ -87,21 +116,7 @@ Build a color palette recommendation tool for Maison Guida that captures emails,
 ### Deliverable
 Email includes 3-5 relevant MG product recommendations with images and links
 
-## Phase 4: Deployment (Week 2-3)
-
-### Tasks
-- [ ] Set up subdomain (colors.maisonguida.com)
-- [ ] Configure nginx reverse proxy
-- [ ] Create systemd service for FastAPI app
-- [ ] Set up SSL certificate (Let's Encrypt)
-- [ ] Test deployment and server startup
-- [ ] Monitor logs and fix any issues
-- [ ] Set up basic error logging
-
-### Deliverable
-Live app running on VPS, accessible via subdomain
-
-## Phase 5: Photo Upload (Optional - Week 3-4)
+## Phase 6: Photo Upload (Optional - Future)
 
 ### Tasks
 - [ ] Add "upgrade" CTA in email
@@ -115,7 +130,7 @@ Live app running on VPS, accessible via subdomain
 ### Deliverable
 Users can upload photos for enhanced color analysis
 
-## Phase 6: Analytics & Optimization (Ongoing)
+## Phase 7: Analytics & Optimization (Ongoing)
 
 ### Tasks
 - [ ] Track questionnaire completion rate
@@ -128,6 +143,22 @@ Users can upload photos for enhanced color analysis
 
 ### Deliverable
 Data-driven insights to improve conversion
+
+## Phase 8: SEO & Content (Future)
+
+### Tasks
+- [ ] Add educational content about color theory (from docs/customer-question-list.md)
+- [ ] Create "About Color Analysis" page explaining the 12-season system
+- [ ] Add SEO meta tags (title, description, keywords)
+- [ ] Implement structured data (Schema.org for local business)
+- [ ] Add FAQ page about seasonal color analysis
+- [ ] Create blog/content section for fashion tips by season
+- [ ] Optimize for local SEO (Italy/Malta markets)
+- [ ] Add multilingual SEO (Italian & English)
+- [ ] Social media meta tags (OpenGraph, Twitter Cards)
+
+### Deliverable
+Improved organic traffic and educational content for users
 
 ## File Structure
 

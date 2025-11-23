@@ -69,24 +69,27 @@ class SeasonAnalyzer:
 
         for question_id, answer in question_map.items():
             if isinstance(answer, list):
-                # Multi-select questions
-                for answer_id in answer:
-                    self._add_signals(signals, question_id, answer_id)
+                # Multi-select questions - normalize by number of selections to prevent inflation
+                if len(answer) > 0:
+                    normalization_factor = 1.0 / len(answer)
+                    for answer_id in answer:
+                        self._add_signals(signals, question_id, answer_id, normalization_factor)
             else:
-                # Single-select questions
-                self._add_signals(signals, question_id, answer)
+                # Single-select questions - no normalization needed
+                self._add_signals(signals, question_id, answer, 1.0)
 
         return signals
 
-    def _add_signals(self, signals: Dict[str, int], question_id: str, answer_id: str):
-        """Add signals from a specific answer to the accumulator"""
+    def _add_signals(self, signals: Dict[str, int], question_id: str, answer_id: str, normalization_factor: float = 1.0):
+        """Add signals from a specific answer to the accumulator, applying normalization factor"""
         answer_signals = self.rules.get_question_signals(question_id, answer_id)
 
         for signal_type, values in answer_signals.items():
             if isinstance(values, dict):
                 for key, weight in values.items():
                     signal_key = f"{signal_type}_{key}"
-                    signals[signal_key] += weight
+                    # Apply normalization (for multi-select questions)
+                    signals[signal_key] += weight * normalization_factor
 
     def _determine_undertone(self, signals: Dict[str, int]) -> str:
         """Determine dominant undertone: warm, cool, or neutral"""
@@ -275,8 +278,8 @@ class SeasonAnalyzer:
                 if has_trait:
                     boost += modifier.get("boost", 0)
 
-        # Calculate final score
-        confidence = int(base_score + (boost * 100))
+        # Calculate final score (boost is already in percentage points, e.g., 0.15 = 15%)
+        confidence = int(base_score * (1.0 + boost))
 
         # Clamp to 0-100
         return max(0, min(100, confidence))

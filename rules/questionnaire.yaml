@@ -284,25 +284,26 @@ questions:
         label: "Vibrant and glowing"
         signals:
           chroma: { bright: 2 }
-          # Good color match
+          # Good color match - wearing colors that suit them
 
       - id: "washed_out"
         label: "Washed out or tired"
         signals:
-          # Using wrong colors - doesn't give direct signals
-          needs_analysis: true
+          # May need softer/different intensity colors
+          chroma: { muted: 1 }
+          value: { light: 1 }
 
       - id: "depends"
         label: "It depends on the color"
         signals:
-          # Normal response
-          neutral: 1
+          # Normal response - understands color impact
+          undertone: { neutral: 1 }
 
       - id: "no_comments"
         label: "No one comments"
         signals:
-          # Neutral
-          neutral: 1
+          # May be wearing safe/neutral colors
+          chroma: { muted: 1 }
 # Signal Processing Notes:
 #
 # Each answer provides weighted signals toward:

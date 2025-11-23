@@ -53,7 +53,7 @@ season_mappings:
   true_spring:
     conditions:
       undertone: "warm"
-      chroma: ["clear", "moderate_bright"]
+      chroma: ["clear", "bright"]
       value: "medium"
     confidence_modifiers:
       - if_wears: ["earth_tones", "pastels"]
@@ -97,7 +97,7 @@ season_mappings:
   soft_summer:
     conditions:
       undertone: ["cool", "neutral"]
-      chroma: "very_muted"
+      chroma: ["muted", "soft"]
       value: ["medium", "light"]
     confidence_modifiers:
       - if_avoids: ["bright_jewel_tones", "black"]
@@ -135,7 +135,7 @@ season_mappings:
     conditions:
       undertone: "warm"
       value: "deep"
-      chroma: ["rich", "deep"]
+      chroma: ["rich", "muted"]
     confidence_modifiers:
       - if_has: ["dark_brown_hair", "deep_skin"]
         boost: 0.15
@@ -169,8 +169,8 @@ season_mappings:
   bright_winter:
     conditions:
       undertone: "cool"
-      chroma: "very_bright"
-      value: "medium"
+      chroma: "bright"
+      value: ["medium", "light"]
     confidence_modifiers:
       - if_wears: ["bright_jewel_tones"]
         boost: 0.2
